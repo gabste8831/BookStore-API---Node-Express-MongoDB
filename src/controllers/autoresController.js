@@ -1,5 +1,6 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import autores from "../models/Autor.js";
+import NaoEncontrado from "../erros/naoEncontrado.js";
 
 class AutorController {
   static listarAutores = async (req, res, next) => {
@@ -21,7 +22,7 @@ class AutorController {
       if (autorResultado !== null) {
         res.status(200).send(autorResultado);
       } else {
-        res.status(404).send({message: "Id do Autor não localizado."});
+        next(new NaoEncontrado("Autor não encontrado"));
       }
     } catch (erro) {
       next(erro);
@@ -36,7 +37,7 @@ class AutorController {
 
       res.status(201).send(autorResultado.toJSON());
     } catch (erro) {
-      next(erro)
+      next(erro);
     }
   };
 
@@ -48,7 +49,7 @@ class AutorController {
 
       res.status(200).send({message: "Autor atualizado com sucesso"});
     } catch (erro) {
-      next(erro)
+      next(erro);
     }
   };
 
